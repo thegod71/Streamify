@@ -1,8 +1,44 @@
 import User from "../models/User.js";
+import { upsertStreamUser } from "../lib/stream.js";
 import jwt from "jsonwebtoken";
 
 export async function login(req, res) {
-  res.send("login route");
+  try {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+      return res
+        .status(400)
+        .json({ message: "Please provide all required fields" });
+    }
+
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(400).json({ message: "Invalid email or password" });
+    }
+
+    const isPasswordMatch = await user.matchPassword(password);
+
+    if (!isPasswordMatch) {
+      return res.status(400).json({ message: "Invalid email or password" });
+    }
+    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "7d",
+    });
+
+    res.cookie("jwt", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+      sameSite: "strict",
+    });
+
+    res.status(200).json({ success: true, user });
+  } catch (err) {
+    console.error("error in auth controller", err);
+    res.status(500).json({ message: "Internal server error" });
+  }
 }
 
 export async function signup(req, res) {
@@ -42,6 +78,20 @@ export async function signup(req, res) {
       password,
       profilePic: avatar,
     });
+
+    await newUser.save();
+
+    try {
+      await upsertStreamUser({
+        id: newUser._id.toString(),
+        name: newUser.fullName,
+        image: newUser.profilePic || "",
+      });
+      console.log(`User ${newUser.fullName} upserted to Stream successfully.`);
+    } catch (err) {
+      console.error("Error upserting user to Stream:", err);
+    }
+
     const token = jwt.sign({ userId: newUser._id }, process.env.JWT_SECRET, {
       expiresIn: "7d",
     });
@@ -59,7 +109,8 @@ export async function signup(req, res) {
     res.status(500).json({ message: "Internal server error" });
   }
 }
-export function logout(req, res) {
-  res.send("logout route");
+export async function logout(req, res) {
+  res.clearCookie("jwt");
+  res.status(200).json({ message: "Logged out successfully" });
 }
 // https://youtu.be/ZuwigEmwsTM
