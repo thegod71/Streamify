@@ -113,4 +113,47 @@ export async function logout(req, res) {
   res.clearCookie("jwt");
   res.status(200).json({ message: "Logged out successfully" });
 }
+
+export async function onboard(req, res) {
+  try {
+    console.log(req.user);
+    const userId = req.user; // Assuming you have a middleware that sets req.userId after verifying the JWT
+    const { fullName, bio, nativeLanguage, learnedLanguage, location } =
+      req.body;
+
+    if (!fullName || !bio || !nativeLanguage || !learnedLanguage || !location) {
+      return res.status(400).json({
+        message: "Please provide all required fields",
+        missingFields: [
+          !fullName && "fullName is required",
+          !bio && "Bio is required",
+          !nativeLanguage && "Native language is required",
+          !learnedLanguage && "Learned language is required",
+          !location && "Location is required",
+        ].filter(Boolean), // Filter out null values
+      });
+    }
+    //console.log("Onboarding data received:", userId);
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      {
+        ...req.body,
+        isOnboarded: true,
+      },
+      { new: true },
+    );
+
+    // new: true option is used to return the updated document instead of the original one.
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    return res.status(200).json({ success: true, user: updatedUser });
+  } catch (err) {
+    console.error("Error in onboarding:", err);
+    res.status(500).json({ message: "Internal server error" });
+  }
+}
+
 // https://youtu.be/ZuwigEmwsTM
