@@ -116,8 +116,8 @@ export async function logout(req, res) {
 
 export async function onboard(req, res) {
   try {
-    console.log(req.user);
-    const userId = req.user; // Assuming you have a middleware that sets req.userId after verifying the JWT
+    //console.log(req.user);
+    const userId = req.user._id; // Assuming you have a middleware that sets req.userId after verifying the JWT
     const { fullName, bio, nativeLanguage, learnedLanguage, location } =
       req.body;
 
@@ -147,6 +147,16 @@ export async function onboard(req, res) {
 
     if (!updatedUser) {
       return res.status(404).json({ message: "User not found" });
+    }
+    try {
+      await upsertStreamUser({
+        id: updatedUser._id.toString(),
+        name: updatedUser.fullName,
+        image: updatedUser.profilePic || "",
+      });
+      console.log(`stream user update after onboarding`);
+    } catch (StreamErr) {
+      console.error("Error updating stream user:", StreamErr);
     }
 
     return res.status(200).json({ success: true, user: updatedUser });
