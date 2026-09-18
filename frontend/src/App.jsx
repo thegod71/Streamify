@@ -7,14 +7,21 @@ import ChatPage from "./pages/ChatPage.jsx";
 import CallPage from "./pages/CallPage.jsx";
 import NotificationsPage from "./pages/NotificationsPage.jsx";
 import OnboardingPage from "./pages/OnboardingPage.jsx";
-import toast, { Toaster } from "react-hot-toast";
+import { Toaster } from "react-hot-toast";
+import { useQuery } from "@tanstack/react-query";
+
 function App() {
+  const { data } = useQuery({
+    queryKey: ["users"],
+    queryFn: async () => {
+      const res = await fetch("https://mcp.httpstatus.com/dummy/user");
+      const data = await res.json();
+      return data;
+    },
+  });
+  console.log(data);
   return (
     <div data-theme="coffee">
-      <button onClick={() => toast.success("This is check")}>
-        Create a toast
-      </button>
-
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
