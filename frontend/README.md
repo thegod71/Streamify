@@ -17,3 +17,4 @@ If you are developing a production application, we recommend using TypeScript wi
 
 1=> router all routes set-up
 2=> set up tailwind and daisy,tanstack and axios
+3=> 21/09/2026 - today i learn how to useMutation in tanstack and what is useQueryClient(it is cache for query)

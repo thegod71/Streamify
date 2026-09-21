@@ -43,7 +43,7 @@ export async function login(req, res) {
 
 export async function signup(req, res) {
   const { email, password, fullName } = req.body;
-
+  console.log(email);
   try {
     if (!email || !password || !fullName) {
       return res
