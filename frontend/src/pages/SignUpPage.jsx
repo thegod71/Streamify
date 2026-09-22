@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { ShipWheelIcon } from "lucide-react";
 import { Link } from "react-router";
-import { axiosInstance } from "../lib/axios.js";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { signup } from "../lib/api.js";
 //import useSignUp from "../hooks/useSignUp";
 
 const SignUpPage = () => {
@@ -11,18 +11,35 @@ const SignUpPage = () => {
     email: "",
     password: "",
   });
+  // in this the useMutation is use to updata /create like post and update when mutationFn is return success then Queryclinet run invalidateQueries ess may hm app.jsx may jo auth/me  likha hain wo run hoga aur ab pura application ko bataya ga ki kon se user  hain like useContextapi  and now we authuser come so in app.jsx directly homwpage is  open. re fetch the authuser
+  // const queryclient = useQueryClient();
+  // const { mutate, isPending, error } = useMutation({
+  //   mutationFn: async () => {
+  //     const respond = await axiosInstance.post("/auth/signup", signupData
+  // return respond.data;);
+  //
+  //   },
+  //   onSuccess: () => queryclient.invalidateQueries({ queryKey: ["authUser"] }),
+  // });
+
+  // const handleSignup = (e) => {
+  //   e.preventDefault();
+  //   mutate();
+  // };
+  ///----------------------------------------------------------------
   const queryclient = useQueryClient();
-  const { mutate, isPending, error } = useMutation({
-    mutationFn: async () => {
-      const respond = await axiosInstance.post("/auth/signup", signupData);
-      return respond.data;
-    },
+  const {
+    mutate: signupmutation,
+    isPending,
+    error,
+  } = useMutation({
+    mutationFn: signup,
     onSuccess: () => queryclient.invalidateQueries({ queryKey: ["authUser"] }),
   });
 
   const handleSignup = (e) => {
     e.preventDefault();
-    mutate();
+    signupmutation(signupData);
   };
 
   return (
