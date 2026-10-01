@@ -8,3 +8,9 @@ export const getAuthUser = async () => {
   const res = await axiosInstance.get("/auth/me");
   return res.data;
 };
+
+export const completeOnboarding = async (userData) => {
+  //console.log("userData in completeOnboarding:", userData); // Log the userData for debugging
+  const res = await axiosInstance.post("/auth/onboarding", userData);
+  return res.data;
+};

@@ -118,17 +118,17 @@ export async function onboard(req, res) {
   try {
     //console.log(req.user);
     const userId = req.user._id; // Assuming you have a middleware that sets req.userId after verifying the JWT
-    const { fullName, bio, nativeLanguage, learnedLanguage, location } =
+    const { fullName, bio, nativeLanguage, learningLanguage, location } =
       req.body;
-
-    if (!fullName || !bio || !nativeLanguage || !learnedLanguage || !location) {
+   // console.log("Onboarding data received:", req.body);
+    if (!fullName || !bio || !nativeLanguage || !learningLanguage || !location) {
       return res.status(400).json({
         message: "Please provide all required fields",
         missingFields: [
           !fullName && "fullName is required",
           !bio && "Bio is required",
           !nativeLanguage && "Native language is required",
-          !learnedLanguage && "Learned language is required",
+          !learningLanguage && "Learning language is required",
           !location && "Location is required",
         ].filter(Boolean), // Filter out null values
       });

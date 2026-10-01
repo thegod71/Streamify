@@ -29,11 +29,11 @@ function App() {
   //-------------------------------------------------------------------
   const { isLoading, authUser } = useAuthUser();
   const isAuthenticated = Boolean(authUser);
-  const isOnboard = authUser.isOnboarded;
+  const isOnboard = authUser?.isOnboarded;
   if (isLoading) return <PageLoader />;
 
   return (
-    <div data-theme="coffee">
+    <div data-theme="coffee"> 
       <Routes>
         <Route
           path="/"
@@ -41,7 +41,7 @@ function App() {
             isAuthenticated && isOnboard ? (
               <HomePage />
             ) : (
-              <Navigate to={!isAuthenticated ? "/login" : "onboarding"} />
+              <Navigate to={!isAuthenticated ? "/login" : "/onboarding"} />
             )
           }
         />
