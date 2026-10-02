@@ -47,11 +47,10 @@ function App() {
         />
         <Route
           path="/login"
-          element={!isAuthenticated ? <LoginPage /> : <Navigate to="/" />}
-        />
+          element={!isAuthenticated ? <LoginPage /> : <Navigate to={(isOnboard) ? "/" : "/onboarding"} />} /> 
         <Route
           path="/signup"
-          element={!isAuthenticated ? <SignUpPage /> : <Navigate to="/" />}
+          element={!isAuthenticated ? <SignUpPage /> : <Navigate to={(isOnboard) ? "/" : "/onboarding"} />}
         />
         <Route
           path="/notifications"
@@ -68,9 +67,9 @@ function App() {
           element={isAuthenticated ? <ChatPage /> : <Navigate to="/login" />}
         />
         <Route
-          path="/onboarding"
+          path="/onboarding" 
           element={
-            isAuthenticated ? <OnboardingPage /> : <Navigate to="/login" />
+            isAuthenticated ? (!isOnboard ? <OnboardingPage /> : <Navigate to="/" />) : <Navigate to="/login" />
           }
         />
       </Routes>

@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken";
 export async function login(req, res) {
   try {
     const { email, password } = req.body;
-
+    
     if (!email || !password) {
       return res
         .status(400)
@@ -43,6 +43,7 @@ export async function login(req, res) {
 
 export async function signup(req, res) {
   const { email, password, fullName } = req.body;
+  console.log("Signup request received:", req.body); // Log the request body for debugging
   console.log(email);
   try {
     if (!email || !password || !fullName) {

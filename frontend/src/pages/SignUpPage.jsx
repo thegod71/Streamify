@@ -3,7 +3,7 @@ import { ShipWheelIcon } from "lucide-react";
 import { Link } from "react-router";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { signup } from "../lib/api.js";
-//import useSignUp from "../hooks/useSignUp";
+import useSignup from "../hooks/useSignup";
 
 const SignUpPage = () => {
   const [signupData, setSignupData] = useState({
@@ -11,7 +11,12 @@ const SignUpPage = () => {
     email: "",
     password: "",
   });
-  // in this the useMutation is use to updata /create like post and update when mutationFn is return success then Queryclinet run invalidateQueries ess may hm app.jsx may jo auth/me  likha hain wo run hoga aur ab pura application ko bataya ga ki kon se user  hain like useContextapi  and now we authuser come so in app.jsx directly homwpage is  open. re fetch the authuser
+  // in this the useMutation is use to updata /create 
+  // like post and update when mutationFn is return success then 
+  // Queryclinet run invalidateQueries ess may hm app.jsx may jo 
+  // auth/me  likha hain wo run hoga aur ab pura application ko bataya 
+  // ga ki kon se user  hain like useContextapi  and now we authuser 
+  // come so in app.jsx directly homwpage is  open. re fetch the authuser
   // const queryclient = useQueryClient();
   // const { mutate, isPending, error } = useMutation({
   //   mutationFn: async () => {
@@ -27,16 +32,19 @@ const SignUpPage = () => {
   //   mutate();
   // };
   ///----------------------------------------------------------------
-  const queryclient = useQueryClient();
-  const {
-    mutate: signupmutation,
-    isPending,
-    error,
-  } = useMutation({
-    mutationFn: signup,
-    onSuccess: () => queryclient.invalidateQueries({ queryKey: ["authUser"] }),
-  });
 
+  // this is done without custom hook
+  // const queryclient = useQueryClient();
+  // const {
+  //   mutate: signupmutation,
+  //   isPending,
+  //   error,
+  // } = useMutation({
+  //   mutationFn: signup,
+  //   onSuccess: () => queryclient.invalidateQueries({ queryKey: ["authUser"] }),
+  // });
+  // this is done with custom hook
+  const {isPending,error,signupmutation}=useSignup()
   const handleSignup = (e) => {
     e.preventDefault();
     signupmutation(signupData);
