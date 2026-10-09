@@ -9,6 +9,9 @@ const Navbar = () => {
   const location = useLocation();//Where am I currently?
   //useLocation() gives React information about the current URL/location.
   const isChatPage = location.pathname?.startsWith("/chat");
+//startsWith() is a JavaScript string function.
+//It asks: "Does this string start with this particular text?"
+
 
   // const queryClient = useQueryClient();
   // const { mutate: logoutMutation } = useMutation({

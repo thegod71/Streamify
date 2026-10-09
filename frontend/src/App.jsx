@@ -11,6 +11,7 @@ import { Toaster } from "react-hot-toast";
 import PageLoader from "./components/PageLoader.jsx";
 import useAuthUser from "./hooks/useAuthuser.js";
 import Layout from "./components/Layout.jsx";
+import { useThemeStore } from "./store/useThemeStore.js";
 function App() {
   //-------- Starting Phase------------
   // const {
@@ -31,10 +32,11 @@ function App() {
   const { isLoading, authUser } = useAuthUser();
   const isAuthenticated = Boolean(authUser);
   const isOnboard = authUser?.isOnboarded;
+  const { theme } = useThemeStore();
   if (isLoading) return <PageLoader />;
-
+  
   return (
-    <div data-theme="coffee"> 
+    <div data-theme={theme}> 
       <Routes>
         <Route
           path="/"

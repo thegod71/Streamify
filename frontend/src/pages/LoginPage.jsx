@@ -2,6 +2,7 @@ import { useState } from "react";
 import { ShipWheelIcon } from "lucide-react";
 import { Link } from "react-router";
 import useLogin from "../hooks/useLogin";
+import { useThemeStore } from "../store/useThemeStore.js";
 
 const LoginPage = () => {
   const [loginData, setLoginData] = useState({
@@ -21,7 +22,7 @@ const LoginPage = () => {
 
   // This is how we did it using our custom hook - optimized version
   const { isPending, error, loginMutation } = useLogin();
-
+  const {theme} = useThemeStore();
   const handleLogin = (e) => {
     e.preventDefault();
     loginMutation(loginData);
@@ -30,7 +31,7 @@ const LoginPage = () => {
   return (
     <div
       className="h-screen flex items-center justify-center p-4 sm:p-6 md:p-8"
-      data-theme="forest"
+      data-theme={theme}
     >
       <div className="border border-primary/25 flex flex-col lg:flex-row w-full max-w-5xl mx-auto bg-base-100 rounded-xl shadow-lg overflow-hidden">
         {/* LOGIN FORM SECTION */}
