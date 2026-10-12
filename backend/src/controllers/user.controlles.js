@@ -32,9 +32,12 @@ export async function getMyFriends(req, res) {
     //populate = ID ko actual user information mein badlo.
     //     select = KYA chahiye?
     // populate = ID ke peeche KAUN hai?
-
+//Friends: [
+//   { fullName: "Rahul", Profilepic: "rahul.jpg" },
+//   { fullName: "Aman", Profilepic: "aman.jpg" }
+// 
     res.status(200).json(user.friends);
-  } catch {
+  } catch (err) {
     console.log(err, "Error in the userControlles - GetmyFriend");
     res.status(500).json({ message: "Internal server Error" });
   }
@@ -116,7 +119,7 @@ export async function acceptfriendRequest(req, res) {
     });
     res.status(200).json({ message: "Friend Request Accepted" });
   } catch (error) {
-    console.log(err, "Error in the user Controller sendfriends");
+    console.log(error, "Error in the user Controller acceptfriendRequest");
     return res.status(500).json({ message: "Internal Server Error" });
   }
 }
