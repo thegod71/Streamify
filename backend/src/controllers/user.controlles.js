@@ -3,9 +3,11 @@ import FriendRequest from "../models/FriendRequest.js";
 
 export async function getRecommendedUsers(req, res) {
   try {
+    
     const currentUserId = req.user.id;
     const currentUser = req.user;
-    const recommendedUsers = User.find({
+    //console.log(currentUser ,currentUserId,"this is that")
+    const recommendedUsers =await User.find({
       $and: [
         { _id: { $ne: currentUserId } }, // exclude current user  $ne means:not equal
         { _id: { $nin: currentUser.friends } }, // exclude friend  $nin means:not in
@@ -46,8 +48,9 @@ export async function getMyFriends(req, res) {
 export async function sendfriendRequest(req, res) {
   try {
     const myId = req.user.id;
-    const { id: recipientId } = req.params;
 
+    const { id: recipientId } = req.params;
+   
     if (myId === recipientId) {
       return res
         .status(400)
@@ -83,7 +86,7 @@ export async function sendfriendRequest(req, res) {
       sender: myId,
       recipient: recipientId,
     });
-
+    console.log(friendRequest)
     return res.status(200).json(friendRequest);
   } catch (err) {
     console.log(err, "Error in the user Controller sendfriends");

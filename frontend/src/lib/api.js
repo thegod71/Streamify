@@ -36,7 +36,7 @@ export const login = async (loginData) => {
   return res.data;
 };
 
-export const sendfriendRequest=async(id)=>{
+export const  sendFriendRequest=async(id)=>{
   const res=await axiosInstance.post(`/users/friend-request/${id}`);
   return res.data;
 }

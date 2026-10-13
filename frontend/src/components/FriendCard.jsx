@@ -35,7 +35,8 @@ export default FriendCard;
 
 export function getLanguageFlag(language) {
   if (!language) return null;
-
+// in this language come and through language code we generate a 
+// flag by Hiting api 
   const langLower = language.toLowerCase();
   const countryCode = LANGUAGE_TO_FLAG[langLower];
 
