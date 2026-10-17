@@ -86,7 +86,7 @@ export async function sendfriendRequest(req, res) {
       sender: myId,
       recipient: recipientId,
     });
-    console.log(friendRequest)
+   // console.log(friendRequest)
     return res.status(200).json(friendRequest);
   } catch (err) {
     console.log(err, "Error in the user Controller sendfriends");
@@ -99,14 +99,17 @@ export async function acceptfriendRequest(req, res) {
     const { id: requestId } = req.params;
     const friendRequest = await FriendRequest.findById(requestId);
 
+   // console.log(requestId , friendRequest);
     if (!friendRequest) {
       res.status(400).json({ message: "Friend Request Not find" });
     }
     if (friendRequest.recipient.toString() !== req.user.id) {
-      res
+      return res
         .status(400)
         .json({ message: "You are not authorize to accept that request" });
     }
+    friendRequest.status = "accepted";
+    await friendRequest.save();
     const senderId = friendRequest.sender;
     const recipientId = friendRequest.recipient;
     //addToSet -> it is a method that add only if it is not exist
@@ -151,6 +154,8 @@ export async function getFriendRequests(req, res) {
 
 export async function getOutgoingFriendRequests(req, res) {
   try {
+
+    // ya return kr rha hain kon kon se  friendlist may hain 
     const outgoingRequest = await FriendRequest.find({
       sender: req.user.id,
       status: "pending",
@@ -158,7 +163,7 @@ export async function getOutgoingFriendRequests(req, res) {
       "recipient",
       "fullName profilePic nativeLanguage learningLanguage",
     );
-    res.status(200).json({ outgoingRequest });
+    res.status(200).json( outgoingRequest );
   } catch (err) {
     console.log(err, " Error in the user controller getOutgoing");
     return res.status(500).json({ message: "Internal Server Error" });

@@ -24,7 +24,7 @@ function HomePage() {
     queryFn: getUserFriends })
 
    const {data:recommendedUsers=[],isLoading:loadingUsers}=useQuery({
-    queryKey:["recommendedUsers"],
+    queryKey:["recommendedUsers"], 
     queryFn: getRecommendedUsers }) 
 
     const {data:outgoingFriendReqs}=useQuery({
@@ -38,16 +38,17 @@ function HomePage() {
       }
     })
 
-    useEffect(()=>{
-      const outgoingID=new Set();
-      if(outgoingFriendReqs && outgoingFriendReqs.length>0){
-          outgoingFriendReqs.forEach((req)=>{
-                outgoingID.add(req.recipient._id);
-          })
-        setOutgoingRequestsIds(outgoingID);
-          
-      }
-    },[outgoingFriendReqs])
+     useEffect(() => {
+    const outgoingIds = new Set();
+   // console.log(outgoingFriendReqs);
+    if (outgoingFriendReqs && outgoingFriendReqs.length > 0) {
+      outgoingFriendReqs.forEach((req) => {
+        outgoingIds.add(req.recipient._id);
+      });
+     // console.log(outgoingIds)
+      setOutgoingRequestsIds(outgoingIds);
+    }
+  }, [outgoingFriendReqs]);
 
   return (
     <div className="p-4 sm:p-6 lg:p-8">

@@ -46,3 +46,19 @@ export const getOutgoingFriendReqs=async()=>{
   const res=await axiosInstance.get("/users/outgoing-friend-requests");
   return res.data;
 }
+
+export const getFriendRequest=async()=>{
+  const res=await axiosInstance.get("/users/friend-requests");
+  return res.data;
+}
+
+export const acceptfriendRequest=async(id)=>{
+ 
+  const res= await axiosInstance.put(`users/friend-request/${id}/accept`)
+  // console.log(res)
+  return res.data 
+}
+export const getStreamToken=async()=>{
+  const res=await axiosInstance.get("/chat/token");
+  return res.data
+}

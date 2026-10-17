@@ -1,7 +1,7 @@
 import Sidebar from "./Sidebar";
 import Navbar from "./Navbar";
 
-const Layout = ({ children, showSidebar = false }) => {
+const Layout = ({ children, showSidebar = true }) => {
   return (
     <div className="min-h-screen">
       <div className="flex">
