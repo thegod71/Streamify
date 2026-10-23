@@ -1,12 +1,9 @@
-# Streamify
-
-> One-line description of what Streamify does. *(e.g., a video/live streaming web app)*
 
 ## Features
 
-- Feature one
-- Feature two
-- Feature three
+- Feature one-VIDEO CALL
+- Feature two-REAL TIME CHAT
+- Feature three-SCREEN SHARE
 
 ## Tech Stack
 
